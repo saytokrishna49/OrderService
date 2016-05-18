@@ -15,10 +15,6 @@ public class OrderService {
 	
 	private long threadWaitTime;
 	
-	public OrderService(long threadWaitTime){
-		this.threadWaitTime = threadWaitTime;
-	}
-
 	public String processOrder() throws Exception{
 		ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
 		ServiceA serviceA = new ServiceA();
@@ -42,5 +38,13 @@ public class OrderService {
 		
 		return "success";
 		
+	}
+
+	public long getThreadWaitTime() {
+		return threadWaitTime;
+	}
+
+	public void setThreadWaitTime(long threadWaitTime) {
+		this.threadWaitTime = threadWaitTime;
 	}
 }

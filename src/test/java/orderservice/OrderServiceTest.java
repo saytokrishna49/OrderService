@@ -1,6 +1,10 @@
 package orderservice;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import com.order.exception.OrderException;
@@ -8,39 +12,47 @@ import com.order.services.OrderService;
 
 public class OrderServiceTest {
 	
+	private static OrderService orderServiceMock;
+	
+	@Before
+	public void mockData() throws Exception{
+		orderServiceMock = mock(OrderService.class);
+		orderServiceMock.setThreadWaitTime(4000);
+		
+	}
+	
 	@Test
 	public void processOrderSuccess() throws Exception{
-		
-		OrderService order = new OrderService(4000);
-		String output = order.processOrder();
-		Assert.assertSame("success", output);
-		
+		when(orderServiceMock.processOrder()).thenReturn("order processed");
+		String output = orderServiceMock.processOrder();
+		assertSame("order processed", output);
 	}
 	
 	@Test
 	public void processOrderFailure() throws Exception{
-		
-		OrderService order = new OrderService(4000);
-		String output = order.processOrder();
-		Assert.assertSame("failure", output);
+		when(orderServiceMock.processOrder()).thenReturn("order processed");
+		String output = orderServiceMock.processOrder();
+		assertSame("failure", output);
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test(expected = OrderException.class)
 	public void processOrderExceptionSuccess() throws Exception{
-		
-		OrderService order = new OrderService(2000);
-		String output = order.processOrder();
-		Assert.assertSame("success", output);
+		orderServiceMock.setThreadWaitTime(2000);
+		when(orderServiceMock.processOrder()).thenThrow(OrderException.class);
+		String output = orderServiceMock.processOrder();
+		assertSame("success", output);
 		
 	}
 	
 	@Test(expected = OrderException.class)
 	public void processOrderExceptionFailure() throws Exception{
 		
-		OrderService order = new OrderService(4000);
-		String output = order.processOrder();
-		Assert.assertSame("success", output);
+		orderServiceMock.setThreadWaitTime(4000);
+		when(orderServiceMock.processOrder()).thenReturn("order processed");
+		String output = orderServiceMock.processOrder();
+		assertSame("order processed", output);
 		
 	}
 	
