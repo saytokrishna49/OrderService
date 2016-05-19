@@ -1,5 +1,8 @@
 package orderservice;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -7,16 +10,25 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.order.services.ServiceA;
 
 public class ServiceATest {
 
+	private static ServiceA serviceAMock;
+	
+	@BeforeClass
+	public static void mockService() throws Exception{
+		serviceAMock = mock(ServiceA.class);
+		when(serviceAMock.callService()).thenReturn("ServiceA processed");
+		
+	}
 	@Test
 	public void testServiceASuccess() throws Exception{
-		ServiceA serviceA = new ServiceA();
-		Assert.assertSame("outputA", serviceA.callService());
+		String reponse = serviceAMock.callService();
+		Assert.assertSame("ServiceA processed", reponse);
 	}
 	
 	@Test
@@ -38,8 +50,8 @@ public class ServiceATest {
 	
 	@Test
 	public void testServiceAFailure() throws Exception{
-		ServiceA serviceA = new ServiceA();
-		Assert.assertSame("output", serviceA.callService());
+		String reponse = serviceAMock.callService();
+		Assert.assertSame("ServiceA processed failure", reponse);
 	}
 	
 	@Test

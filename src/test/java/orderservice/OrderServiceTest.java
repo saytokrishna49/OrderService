@@ -4,7 +4,7 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.order.exception.OrderException;
@@ -14,8 +14,8 @@ public class OrderServiceTest {
 	
 	private static OrderService orderServiceMock;
 	
-	@Before
-	public void mockData() throws Exception{
+	@BeforeClass
+	public static void mockService() throws Exception{
 		orderServiceMock = mock(OrderService.class);
 		orderServiceMock.setThreadWaitTime(4000);
 		
